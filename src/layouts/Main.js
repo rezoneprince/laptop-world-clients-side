@@ -5,9 +5,11 @@ import Header from "../components/Header/Header";
 
 const Main = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <Header />
-      <Outlet />
+      <div>
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

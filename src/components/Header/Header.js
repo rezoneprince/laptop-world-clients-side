@@ -67,7 +67,9 @@ const Header = () => {
           </ul>
         </div>
         <Link to="" className="font-bold normal-case text-xl">
-          Laptop World
+          <h3>
+            Laptop <span className="text-primary">World</span>
+          </h3>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
