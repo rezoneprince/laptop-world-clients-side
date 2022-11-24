@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { MdAlternateEmail, MdPerson } from "react-icons/md";
 import PrimaryBtn from "../../../components/PrimaryBtn/PrimaryBtn";
+import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const CreateProduct = () => {
+  const { title } = useContext(AuthContext);
+  title("Create Product");
   const {
     register,
     formState: { errors },

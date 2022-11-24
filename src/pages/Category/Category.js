@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Products from "../../components/Category/Products/Products";
+import { AuthContext } from "../../Contexts/AuthProvider/AuthProvider";
 
 const Category = () => {
+  const { title } = useContext(AuthContext);
+  title("Category");
   return (
     <div>
       <div

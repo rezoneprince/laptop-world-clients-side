@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const AllSellers = () => {
+  const { title } = useContext(AuthContext);
+  title("All Sellers");
   return (
     <div className="p-14">
       <div className="">
