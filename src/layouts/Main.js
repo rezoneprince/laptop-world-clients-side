@@ -7,9 +7,7 @@ const Main = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <div>
-        <Outlet />
-      </div>
+      <Outlet />
       <Footer />
     </div>
   );
