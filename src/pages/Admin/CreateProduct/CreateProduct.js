@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -8,6 +9,9 @@ import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 const CreateProduct = () => {
   const categories = useLoaderData();
   const { user } = useContext(AuthContext);
+
+  const date = format(new Date(), "PP");
+  console.log(date);
 
   const { title } = useContext(AuthContext);
   title("Create Product");
@@ -52,6 +56,7 @@ const CreateProduct = () => {
             discretion: data.discretion,
             image: imgData.data.url,
             featured: data.featured,
+            date,
           };
 
           fetch("http://localhost:5000/products", {

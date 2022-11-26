@@ -9,9 +9,9 @@ const Footer = () => {
           Laptop <span className="text-primary">World</span>
         </h3>
         <p>
-          ACME Industries Ltd.
+          Laptop World Ltd.
           <br />
-          Providing reliable tech since 1992
+          Providing reliable tech since 2022
         </p>
       </div>
       <div>

@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { MdVerified } from "react-icons/md";
 import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../../../Contexts/AuthProvider/AuthProvider";
 
 const ProductDetails = () => {
+  const [treatment, setTreatment] = useState(null);
   const { title } = useContext(AuthContext);
+
   const {
     _id,
     name,
