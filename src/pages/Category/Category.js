@@ -1,23 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
 import { useLoaderData } from "react-router-dom";
-import Products from "../../components/Category/Products/Products";
+import Product from "../../components/Category/Product/Product";
+import Loading from "../../components/Loading/Loading";
 import { AuthContext } from "../../Contexts/AuthProvider/AuthProvider";
 
 const Category = () => {
   const { name, img } = useLoaderData();
   const { title } = useContext(AuthContext);
 
-  const { data: products, isLoading } = useQuery({
-    queryKey: ["products"],
+  const {
+    data: products,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["products", name],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/products?email=${user?.email}`
+        `http://localhost:5000/category-products?category=${name}`
       );
       const data = await res.json();
       return data;
     },
   });
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   title("Brand");
   return (
@@ -30,7 +39,12 @@ const Category = () => {
           </div>
         </div>
       </div>
-      <Products />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-5">
+        {products &&
+          products.map((product) => (
+            <Product key={product._id} product={product} />
+          ))}
+      </div>
     </div>
   );
 };

@@ -44,7 +44,7 @@ const AllProducts = () => {
               </tr>
             </thead>
             <tbody>
-              {products.length > 0 &&
+              {products &&
                 products.map((product, i) => (
                   <tr>
                     <th>{i + 1}</th>
@@ -86,7 +86,7 @@ const AllProducts = () => {
                 ))}
             </tbody>
           </table>
-          {products.length === 0 && (
+          {!products && (
             <div className="text-center w-full">No Products Found</div>
           )}
         </div>
