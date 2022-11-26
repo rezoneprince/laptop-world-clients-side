@@ -79,7 +79,7 @@ const Header = () => {
             {menu}
           </ul>
         </div>
-        <Link to="" className="font-bold normal-case text-xl">
+        <Link to="/" className="font-bold normal-case text-xl">
           <h3>
             Laptop <span className="text-primary">World</span>
           </h3>
