@@ -7,6 +7,7 @@ import { MdAlternateEmail, MdPerson, MdRemoveRedEye } from "react-icons/md";
 import { Link } from "react-router-dom";
 import PrimaryBtn from "../../components/PrimaryBtn/PrimaryBtn";
 import { AuthContext } from "../../Contexts/AuthProvider/AuthProvider";
+import useToken from "../../hooks/useToken";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -19,6 +20,10 @@ const SignUp = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const [createUserEmail, setCreateUserEmail] = useState("");
+  const [token] = useToken(createUserEmail);
+
+  console.log(token);
 
   title("Signup");
 
@@ -32,6 +37,7 @@ const SignUp = () => {
       .then(() => {
         updateUser(userInfo)
           .then(() => {
+            saveUser(name, email);
             toast.success("Sign up Successfully");
           })
           .catch((error) => {
@@ -40,6 +46,21 @@ const SignUp = () => {
       })
       .catch((error) => {
         toast.error(error.message);
+      });
+  };
+
+  const saveUser = (name, email) => {
+    const user = { name, email };
+    fetch("http://localhost:5000/users", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCreateUserEmail(email);
       });
   };
 

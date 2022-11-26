@@ -3,10 +3,12 @@ import toast from "react-hot-toast";
 import { MdVerified } from "react-icons/md";
 import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../../../Contexts/AuthProvider/AuthProvider";
+import BuyProduct from "../BuyProduct/BuyProduct";
 
 const ProductDetails = () => {
-  const [treatment, setTreatment] = useState(null);
-  const { title } = useContext(AuthContext);
+  const { title, user } = useContext(AuthContext);
+  const [buyProduct, setBuyProduct] = useState(null);
+  const product = useLoaderData();
 
   const {
     _id,
@@ -22,7 +24,7 @@ const ProductDetails = () => {
     image,
     date,
     verified,
-  } = useLoaderData();
+  } = product;
 
   title(name);
 
@@ -39,6 +41,10 @@ const ProductDetails = () => {
           toast.success("Submit report to admin successfully");
         }
       });
+  };
+
+  const closeModal = () => {
+    setBuyProduct(null);
   };
   return (
     <div className="card w-full md:w-1/2 bg-base-100 shadow-xl mx-auto">
@@ -74,9 +80,15 @@ const ProductDetails = () => {
         </div>
         <p>{discretion}</p>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary btn-outline">Buy Now</button>
+          <label
+            htmlFor="order-product-modal"
+            className="btn btn-primary btn-outline"
+          >
+            Buy Now
+          </label>
         </div>
       </div>
+      {buyProduct && <BuyProduct closeModal={closeModal} />}
     </div>
   );
 };
