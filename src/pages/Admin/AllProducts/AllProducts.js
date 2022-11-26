@@ -1,12 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
+import toast from "react-hot-toast";
 import Loading from "../../../components/Loading/Loading";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const AllProducts = () => {
   const { title, user } = useContext(AuthContext);
 
-  const { data: products, isLoading } = useQuery({
+  const {
+    data: products,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["products", "user"],
     queryFn: async () => {
       const res = await fetch(
@@ -16,6 +21,22 @@ const AllProducts = () => {
       return data;
     },
   });
+
+  const handleFeatured = (id) => {
+    fetch(`http://localhost:5000/featured/${id}`, {
+      method: "PUT",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.matchedCount > 0) {
+          toast.success("Product Featured Successfully");
+          refetch();
+        }
+      });
+  };
 
   title("All Products");
 
@@ -46,7 +67,7 @@ const AllProducts = () => {
             <tbody>
               {products &&
                 products.map((product, i) => (
-                  <tr>
+                  <tr key={product._id}>
                     <th>{i + 1}</th>
                     <th>
                       <div className="avatar">
@@ -58,7 +79,20 @@ const AllProducts = () => {
                     <td>{product.name}</td>
                     <td>{product.category}</td>
                     <td>{product.resalePrice}</td>
-                    <td>{product?.featured ? "Featured" : "Regular"}</td>
+                    <td>
+                      {product?.featured ? (
+                        "Featured"
+                      ) : (
+                        <dev>
+                          <button
+                            onClick={() => handleFeatured(product._id)}
+                            className="btn btn-sm btn-secondary btn-outline"
+                          >
+                            Make Featured
+                          </button>
+                        </dev>
+                      )}
+                    </td>
 
                     <td>
                       <label

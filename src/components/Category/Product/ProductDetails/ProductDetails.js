@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import { MdVerified } from "react-icons/md";
 import { useLoaderData } from "react-router-dom";
+import { AuthContext } from "../../../../Contexts/AuthProvider/AuthProvider";
 
 const ProductDetails = () => {
+  const { title } = useContext(AuthContext);
   const {
     _id,
     name,
@@ -19,6 +21,8 @@ const ProductDetails = () => {
     date,
     verified,
   } = useLoaderData();
+
+  title(name);
 
   const handleReport = (id) => {
     fetch(`http://localhost:5000/report/${id}`, {

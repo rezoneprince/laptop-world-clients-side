@@ -8,6 +8,7 @@ import { AuthContext } from "../../Contexts/AuthProvider/AuthProvider";
 const Category = () => {
   const { name, img } = useLoaderData();
   const { title } = useContext(AuthContext);
+  title(name);
 
   const {
     data: products,
@@ -28,7 +29,6 @@ const Category = () => {
     return <Loading />;
   }
 
-  title("Brand");
   return (
     <div>
       <div className="hero" style={{ backgroundImage: `url(${img})` }}>

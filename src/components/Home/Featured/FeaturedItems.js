@@ -1,21 +1,22 @@
 import React from "react";
+import { MdArrowRightAlt } from "react-icons/md";
+import { Link } from "react-router-dom";
 
-const FeaturedItems = () => {
+const FeaturedItems = ({ featured }) => {
+  const { _id, name, image, resalePrice, originalPrice } = featured;
   return (
     <div className="card card-compact bg-base-100 shadow-xl">
       <figure>
-        <img src="https://placeimg.com/400/225/arch" alt="Shoes" />
+        <img src={image} alt={name} />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">Shoes!</h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
+        <h2 className="card-title">{name}</h2>
         <div className="card-actions justify-between items-center">
-          <p>Price: $200 </p>
-          <p>Old Price: $200 </p>
-          <p>Available: 200 </p>
-        </div>
-        <div className="text-center mt-4">
-          <button className="btn btn-outline btn-primary">Add to cart</button>
+          <p>Resale price: ${resalePrice} </p>
+          <p>Original Price: ${originalPrice} </p>
+          <Link to={`/product/${_id}`} className="btn btn-outline btn-primary">
+            <MdArrowRightAlt />
+          </Link>
         </div>
       </div>
     </div>
