@@ -1,10 +1,14 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { MdAlternateEmail, MdPerson } from "react-icons/md";
+import toast from "react-hot-toast";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import PrimaryBtn from "../../../components/PrimaryBtn/PrimaryBtn";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const CreateProduct = () => {
+  const categories = useLoaderData();
+  const { user } = useContext(AuthContext);
+
   const { title } = useContext(AuthContext);
   title("Create Product");
   const {
@@ -12,10 +16,64 @@ const CreateProduct = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const navigate = useNavigate();
+
+  const imageHostKey = process.env.REACT_APP_imageBb_key;
 
   const handleAddDoctor = (data) => {
     console.log(data);
+
+    const image = data.image[0];
+    const formData = new FormData();
+    const sellerName = user?.displayName;
+    const email = user?.email;
+
+    formData.append("image", image);
+
+    const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((imgData) => {
+        if (imgData.success) {
+          const product = {
+            name: data.name,
+            address: data.address,
+            resalePrice: data.resalePrice,
+            originalPrice: data.originalPrice,
+            condition: data.condition,
+            useYear: data.useYear,
+            category: data.category,
+            sellerName,
+            email,
+            discretion: data.discretion,
+            image: imgData.data.url,
+            featured: data.featured,
+          };
+
+          fetch("http://localhost:5000/products", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              // authorization: `bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify(product),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+              if (data.acknowledged) {
+                toast.success("Product Added successfully");
+                navigate("/dashboard/all-products");
+              }
+            });
+        }
+      });
   };
+
   return (
     <div className="p-14">
       <div className="">
@@ -155,59 +213,19 @@ const CreateProduct = () => {
                   required
                 >
                   <option className="hidden" value="">
-                    Select a Specialty
+                    Select a Category
                   </option>
-                  <option className="" value="apple">
-                    Apple
-                  </option>
-                  <option className="" value="hp">
-                    HP
-                  </option>
+
+                  {categories &&
+                    categories.map((category) => (
+                      <option key={category._id} value={category.name}>
+                        {category.name}
+                      </option>
+                    ))}
                 </select>
               </div>
               {errors.category && (
                 <p className="text-error">{errors.category?.message}</p>
-              )}
-            </div>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">Seller Name</span>
-              </label>
-              <div className="relative">
-                <input
-                  {...register("sellerName", {
-                    required: "this is a required",
-                  })}
-                  type="text"
-                  className="input input-bordered w-full"
-                />
-                <MdPerson className="absolute bottom-1/3 right-3" />
-              </div>
-              {errors.sellerName && (
-                <p className="text-error">{errors.sellerName?.message}</p>
-              )}
-            </div>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">Seller Email</span>
-              </label>
-              <div className="relative">
-                <input
-                  {...register("email", {
-                    required: "this is a required",
-                    pattern: {
-                      value:
-                        /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                      message: "Invalid email address",
-                    },
-                  })}
-                  type="email"
-                  className="input input-bordered w-full"
-                />
-                <MdAlternateEmail className="absolute bottom-1/3 right-3" />
-              </div>
-              {errors.email && (
-                <p className="text-error">{errors.email?.message}</p>
               )}
             </div>
 
