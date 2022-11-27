@@ -7,7 +7,7 @@ import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 const AllProducts = () => {
   const { title, user } = useContext(AuthContext);
   const {
-    data: products,
+    data: products, 
     isLoading,
     refetch,
   } = useQuery({

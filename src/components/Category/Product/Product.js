@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Product = ({ product }) => {
   
-  const { _id, name, image, resalePrice, originalPrice, useYear } = product;
+  const { _id, name, image, resalePrice, originalPrice, useYear, } = product;
   return (
     <div className="card card-compact bg-base-100 shadow-xl">
       <figure className="p-10 ">

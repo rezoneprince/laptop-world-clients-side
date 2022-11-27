@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdVerified } from "react-icons/md";
 import { useLoaderData } from "react-router-dom";
@@ -24,7 +25,14 @@ const ProductDetails = () => {
     image,
     date,
     verified,
+    sold,
   } = product;
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/product/${_id}`)
+      .then((res) => res.json())
+      .then((data) => setBuyProduct(data));
+  }, [_id]);
 
   title(name);
 
@@ -43,9 +51,50 @@ const ProductDetails = () => {
       });
   };
 
-  const closeModal = () => {
-    setBuyProduct(null);
+  const handleOrder = (event) => {
+    event.preventDefault();
+
+    const form = event.target;
+
+    const orderedProduct = {
+      name,
+      resalePrice,
+      category,
+      customerName: user.displayName,
+      location: form.location.value,
+      customerPhone: form.phone.value,
+      customerEmail: user.email,
+    };
+
+    axios
+      .post("http://localhost:5000/orders", orderedProduct)
+      .then(function (response) {
+        if (response.statusText === "OK") {
+          setBuyProduct(null);
+          updateProduct(_id);
+        }
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    const updateProduct = (id) => {
+      fetch(`http://localhost:5000/products/${id}`, {
+        method: "PUT",
+        headers: {
+          authorization: `bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.matchedCount > 0) {
+            toast.success("Order Successful");
+          }
+        });
+    };
   };
+
   return (
     <div className="card w-full md:w-1/2 bg-base-100 shadow-xl mx-auto">
       <figure>
@@ -82,13 +131,15 @@ const ProductDetails = () => {
         <div className="card-actions justify-end">
           <label
             htmlFor="order-product-modal"
-            className="btn btn-primary btn-outline"
+            className={`btn btn-primary btn-outline ${sold && "btn-disabled"} `}
           >
             Buy Now
           </label>
         </div>
       </div>
-      {buyProduct && <BuyProduct closeModal={closeModal} />}
+      {buyProduct && (
+        <BuyProduct product={product} user={user} handleOrder={handleOrder} />
+      )}
     </div>
   );
 };
