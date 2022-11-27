@@ -46,7 +46,7 @@ const ReportedItems = () => {
               {/* <!-- row 1 --> */}
               {reportedItems &&
                 reportedItems.map((report, i) => (
-                  <tr>
+                  <tr key={report._id}>
                     <th>{i + 1}</th>
                     <td>{report.name}</td>
                     <td>{report.email}</td>

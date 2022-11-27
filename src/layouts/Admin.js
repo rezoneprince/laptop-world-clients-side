@@ -4,10 +4,15 @@ import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import { AuthContext } from "../Contexts/AuthProvider/AuthProvider";
 import useAdmin from "../hooks/useAdmin";
+import useBuyer from "../hooks/useBuyer";
+import useSeller from "../hooks/useSeller";
 
 const Admin = () => {
   const { user } = useContext(AuthContext);
   const [isAdmin] = useAdmin(user?.email);
+  const [isSeller] = useSeller(user?.email);
+  const [isBuyer] = useBuyer(user?.email);
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -22,15 +27,6 @@ const Admin = () => {
           <label htmlFor="sidebar-btn" className="drawer-overlay"></label>
           <ul className="menu p-4 w-80 bg-base-100 text-base-content">
             {/* <!-- Sidebar content here --> */}
-            <li>
-              <NavLink to="create-product">Create Product</NavLink>
-            </li>
-            <li>
-              <NavLink to="all-products">All Products</NavLink>
-            </li>
-            <li>
-              <NavLink to="my-orders">My Orders</NavLink>
-            </li>
             {isAdmin && (
               <>
                 <li>
@@ -43,6 +39,23 @@ const Admin = () => {
                   <NavLink to="reported-items">Reported Items</NavLink>
                 </li>
               </>
+            )}
+
+            {isSeller && (
+              <>
+                <li>
+                  <NavLink to="create-product">Create Product</NavLink>
+                </li>
+                <li>
+                  <NavLink to="all-products">All Products</NavLink>
+                </li>
+              </>
+            )}
+
+            {isBuyer && (
+              <li>
+                <NavLink to="my-orders">My Orders</NavLink>
+              </li>
             )}
           </ul>
         </div>

@@ -10,6 +10,7 @@ const Dashboard = () => {
   const { title, user } = useContext(AuthContext);
   const [isAdmin] = useAdmin(user?.email);
   const [isSeller] = useSeller(user?.email);
+
   title("Dashboard");
 
   console.log(isSeller);

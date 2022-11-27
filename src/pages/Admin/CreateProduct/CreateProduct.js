@@ -11,7 +11,6 @@ const CreateProduct = () => {
   const { user } = useContext(AuthContext);
 
   const date = format(new Date(), "PP");
-  console.log(date);
 
   const { title } = useContext(AuthContext);
   title("Create Product");
