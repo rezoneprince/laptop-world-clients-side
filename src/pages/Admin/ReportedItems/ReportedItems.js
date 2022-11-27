@@ -1,11 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import Loading from "../../../components/Loading/Loading";
+import ConfirmationModal from "../../../ConfirmationModal/ConfirmationModal";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const ReportedItems = () => {
   const { title } = useContext(AuthContext);
-  const { data: reportedItems, isLoading } = useQuery({
+  const [deletingReported, setDeletingReported] = useState(null);
+  const {
+    data: reportedItems,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["reported"],
     queryFn: async () => {
       const res = await fetch(`http://localhost:5000/reported`, {
@@ -19,6 +26,26 @@ const ReportedItems = () => {
   });
 
   title("Reported Items");
+
+  const deleteReportedHandle = (reported) => {
+    fetch(`http://localhost:5000/reported/${reported._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.deletedCount > 0) {
+          refetch();
+          toast.success("Reported Product Delete successfully");
+        }
+      });
+  };
+  const closeModal = () => {
+    setDeletingReported(null);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -55,7 +82,7 @@ const ReportedItems = () => {
                     <td>
                       <label
                         htmlFor="confirmation-modal"
-                        // onClick={() => setDeletingUser(user)}
+                        onClick={() => setDeletingReported(report)}
                         className="btn btn-md btn-circle btn-error btn-outline"
                       >
                         <svg
@@ -80,16 +107,16 @@ const ReportedItems = () => {
           </table>
         </div>
       </div>
-      {/* {deletingUser && (
-    <ConfirmationModal
-      title={`Ate you sure to delete ${deletingUser.name}`}
-      message={`If you delete ${deletingUser.name}. You cannot recover it`}
-      modalData={deletingUser}
-      closeModal={closeModal}
-      successAction={userDeleteHandle}
-      successColor="btn-error"
-    />
-  )} */}
+      {deletingReported && (
+        <ConfirmationModal
+          title={`Ate you sure to delete ${deletingReported.name}`}
+          message={`If you delete ${deletingReported.name}. You cannot recover it`}
+          modalData={deletingReported}
+          closeModal={closeModal}
+          successAction={deleteReportedHandle}
+          successColor="btn-error"
+        />
+      )}
     </div>
   );
 };
