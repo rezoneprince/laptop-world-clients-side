@@ -15,7 +15,9 @@ import Home from "../../pages/Home/Home";
 import Login from "../../pages/Login/Login";
 import SignUp from "../../pages/SignUp/SignUp";
 import AdminRoute from "../Private/AdminRoute";
+import BuyerRoute from "../Private/BuyerRoute";
 import PrivateRoute from "../Private/PrivateRoute";
+import SellerRoute from "../Private/SellerRoute";
 
 const router = createBrowserRouter([
   {
@@ -70,16 +72,28 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/all-products",
-        element: <AllProducts />,
+        element: (
+          <SellerRoute>
+            <AllProducts />
+          </SellerRoute>
+        ),
       },
       {
         path: "/dashboard/create-product",
-        element: <CreateProduct />,
+        element: (
+          <SellerRoute>
+            <CreateProduct />
+          </SellerRoute>
+        ),
         loader: () => fetch("http://localhost:5000/categories"),
       },
       {
         path: "/dashboard/my-orders",
-        element: <MyOrders />,
+        element: (
+          <BuyerRoute>
+            <MyOrders />
+          </BuyerRoute>
+        ),
       },
       {
         path: "/dashboard/all-seller",
