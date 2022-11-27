@@ -1,15 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
+import Loading from "../../../components/Loading/Loading";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const MyOrders = () => {
   const { title, user } = useContext(AuthContext);
 
-  const {
-    data: orders,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: orders, isLoading } = useQuery({
     queryKey: ["orders", user],
     queryFn: async () => {
       const res = await fetch(
@@ -25,11 +22,15 @@ const MyOrders = () => {
     },
   });
 
+  if (isLoading) {
+    <Loading />;
+  }
+
   title("My Orders");
   return (
     <div className="p-14">
       <div className="">
-        <h3 className="text-2xl">Order</h3>
+        <h3 className="text-2xl">Total Order: {orders.length}</h3>
       </div>
       <div className="mt-6">
         <div className="overflow-x-auto">
