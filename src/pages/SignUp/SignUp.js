@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { MdAlternateEmail, MdPerson, MdRemoveRedEye } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PrimaryBtn from "../../components/PrimaryBtn/PrimaryBtn";
 import { AuthContext } from "../../Contexts/AuthProvider/AuthProvider";
 import useToken from "../../hooks/useToken";
@@ -15,20 +15,24 @@ const SignUp = () => {
   const { providerSignUpAndLogin, signUp, updateUser, title } =
     useContext(AuthContext);
   const [showPass, setShowPass] = useState(true);
+  const [createdUserEmail, setCreatedUserEmail] = useState("");
+  const [token] = useToken(createdUserEmail);
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [createUserEmail, setCreateUserEmail] = useState("");
-  const [token] = useToken(createUserEmail);
-
-  console.log(token);
 
   title("Signup");
 
+  if (token) {
+    navigate("/");
+  }
+
   const signUpHandle = (data) => {
-    const { name, email, password } = data;
+    const { name, email, password, seller } = data;
     const userInfo = {
       displayName: name,
     };
@@ -37,8 +41,7 @@ const SignUp = () => {
       .then(() => {
         updateUser(userInfo)
           .then(() => {
-            saveUser(name, email);
-            toast.success("Sign up Successfully");
+            saveUser(name, email, seller);
           })
           .catch((error) => {
             toast.error(error.message);
@@ -49,8 +52,21 @@ const SignUp = () => {
       });
   };
 
-  const saveUser = (name, email) => {
+  const googleSignUpHandler = () => {
+    providerSignUpAndLogin(googleProvider)
+      .then((result) => {
+        const user = result.user;
+        saveUser(user.displayName, user.email);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  const saveUser = (name, email, seller) => {
     const user = { name, email };
+    seller ? (user.role = "seller") : (user.role = "buyer");
+
     fetch("http://localhost:5000/users", {
       method: "POST",
       headers: {
@@ -60,19 +76,11 @@ const SignUp = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setCreateUserEmail(email);
+        setCreatedUserEmail(email);
+        toast.success("Successfully signup");
       });
   };
 
-  const googleSignUpHandler = () => {
-    providerSignUpAndLogin(googleProvider)
-      .then(() => {
-        toast.success("Successfully signup");
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
   return (
     <div className=" min-h-screen mx-auto flex justify-center items-center  ">
       <div className="w-full md:w-[385px] shadow-lg p-7 rounded-2xl flex flex-col">
@@ -145,10 +153,15 @@ const SignUp = () => {
             {errors.password && (
               <p className="text-error">{errors.password?.message}</p>
             )}
-            <label className="label">
-              <Link to="#" className="label-text-alt link link-hover">
-                Forgot password?
-              </Link>
+          </div>
+          <div className="form-control">
+            <label className="label justify-start gap-5 cursor-pointer">
+              <input
+                {...register("seller")}
+                type="checkbox"
+                className="checkbox"
+              />
+              <span className="label-text">Seller Account</span>
             </label>
           </div>
           <PrimaryBtn>Signup</PrimaryBtn>

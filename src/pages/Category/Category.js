@@ -10,15 +10,16 @@ const Category = () => {
   const { title } = useContext(AuthContext);
   title(name);
 
-  const {
-    data: products,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: products, isLoading } = useQuery({
     queryKey: ["products", name],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/category-products?category=${name}`
+        `http://localhost:5000/category-products?category=${name}`,
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
       );
       const data = await res.json();
       return data;

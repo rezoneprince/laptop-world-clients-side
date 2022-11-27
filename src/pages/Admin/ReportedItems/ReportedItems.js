@@ -8,7 +8,11 @@ const ReportedItems = () => {
   const { data: reportedItems, isLoading } = useQuery({
     queryKey: ["reported"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/reported`);
+      const res = await fetch(`http://localhost:5000/reported`, {
+        headers: {
+          authorization: `bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       const data = await res.json();
       return data;
     },

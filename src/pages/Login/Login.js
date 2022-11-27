@@ -7,12 +7,15 @@ import { MdAlternateEmail, MdRemoveRedEye } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PrimaryBtn from "../../components/PrimaryBtn/PrimaryBtn";
 import { AuthContext } from "../../Contexts/AuthProvider/AuthProvider";
+import useToken from "../../hooks/useToken";
 
 const googleProvider = new GoogleAuthProvider();
 
 const Login = () => {
   const { providerSignUpAndLogin, login, title } = useContext(AuthContext);
   const [showPass, setShowPass] = useState(true);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [token] = useToken(loginEmail);
   const {
     register,
     formState: { errors },
@@ -25,10 +28,15 @@ const Login = () => {
 
   title("Login");
 
+  if (token) {
+    navigate(from, { replace: true });
+  }
+
   const loginHandle = (data) => {
     const { email, password } = data;
     login(email, password)
       .then(() => {
+        setLoginEmail(email);
         toast.success("Successfully login");
       })
       .catch((error) => {
@@ -38,9 +46,9 @@ const Login = () => {
 
   const googleLoginHandler = () => {
     providerSignUpAndLogin(googleProvider)
-      .then(() => {
+      .then((result) => {
+        setLoginEmail(result?.user?.email);
         toast.success("Successfully login");
-        navigate(from, { replace: true });
       })
       .catch((error) => {
         toast.error(error.message);
