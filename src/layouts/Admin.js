@@ -1,9 +1,13 @@
-import React from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink, Outlet } from "react-router-dom";
 import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
+import { AuthContext } from "../Contexts/AuthProvider/AuthProvider";
+import useAdmin from "../hooks/useAdmin";
 
 const Admin = () => {
+  const { user } = useContext(AuthContext);
+  const [isAdmin] = useAdmin(user?.email);
   return (
     <div className="min-h-screen">
       <Header />
@@ -19,9 +23,6 @@ const Admin = () => {
           <ul className="menu p-4 w-80 bg-base-100 text-base-content">
             {/* <!-- Sidebar content here --> */}
             <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-            <li>
               <NavLink to="create-product">Create Product</NavLink>
             </li>
             <li>
@@ -30,15 +31,19 @@ const Admin = () => {
             <li>
               <NavLink to="my-orders">My Orders</NavLink>
             </li>
-            <li>
-              <NavLink to="all-seller">All Seller</NavLink>
-            </li>
-            <li>
-              <NavLink to="all-buyer">All Buyer</NavLink>
-            </li>
-            <li>
-              <NavLink to="reported-items">Reported Items</NavLink>
-            </li>
+            {isAdmin && (
+              <>
+                <li>
+                  <NavLink to="all-seller">All Seller</NavLink>
+                </li>
+                <li>
+                  <NavLink to="all-buyer">All Buyer</NavLink>
+                </li>
+                <li>
+                  <NavLink to="reported-items">Reported Items</NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

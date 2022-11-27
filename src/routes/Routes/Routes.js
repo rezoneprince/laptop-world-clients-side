@@ -39,7 +39,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/category/:id",
-        element: <Category />,
+        element: (
+          <PrivateRoute>
+            <Category />
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/categories/${params.id}`),
       },

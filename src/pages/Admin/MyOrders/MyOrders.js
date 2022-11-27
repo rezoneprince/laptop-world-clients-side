@@ -7,7 +7,7 @@ const MyOrders = () => {
   return (
     <div className="p-14">
       <div className="">
-        <h3 className="text-2xl">Total User:</h3>
+        <h3 className="text-2xl">Total User: </h3>
       </div>
       <div className="mt-6">
         <div className="overflow-x-auto">

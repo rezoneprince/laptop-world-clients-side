@@ -51,7 +51,7 @@ const AllProducts = () => {
   return (
     <div className="p-14">
       <div className="">
-        <h3 className="text-2xl">Total User:</h3>
+        <h3 className="text-2xl">Total User: {products.length}</h3>
       </div>
       <div className="mt-6">
         <div className="overflow-x-auto">
@@ -64,6 +64,7 @@ const AllProducts = () => {
                 <th>Name</th>
                 <th>Brand</th>
                 <th>Price</th>
+                <th>Available</th>
                 <th>Featured</th>
                 <th>Action</th>
               </tr>
@@ -83,6 +84,7 @@ const AllProducts = () => {
                     <td>{product.name}</td>
                     <td>{product.category}</td>
                     <td>{product.resalePrice}</td>
+                    <td>{product.sold ? "sold" : "Available"}</td>
                     <td>
                       {product?.featured ? (
                         "Featured"

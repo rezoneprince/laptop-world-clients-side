@@ -1,13 +1,32 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
+import Loading from "../../../components/Loading/Loading";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const AllBuyers = () => {
   const { title } = useContext(AuthContext);
+  const { data: buyers, isLoading } = useQuery({
+    queryKey: ["buyers"],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:5000/users/buyers`, {
+        headers: {
+          authorization: `bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      const data = await res.json();
+      return data;
+    },
+  });
   title("All Buyers");
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="p-14">
       <div className="">
-        <h3 className="text-2xl">Total User:</h3>
+        <h3 className="text-2xl">Total User: {buyers.length}</h3>
       </div>
       <div className="mt-6">
         <div className="overflow-x-auto">
@@ -18,42 +37,42 @@ const AllBuyers = () => {
                 <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Admin</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {/* <!-- row 1 --> */}
+              {buyers &&
+                buyers.map((buyer, i) => (
+                  <tr key={buyer._id}>
+                    <th>{i + 1}</th>
+                    <td>{buyer.name}</td>
+                    <td>{buyer.email}</td>
 
-              <tr>
-                <th>1</th>
-                <td>name</td>
-                <td>email</td>
-                <td>email</td>
-
-                <td>
-                  <label
-                    htmlFor="confirmation-modal"
-                    // onClick={() => setDeletingUser(user)}
-                    className="btn btn-md btn-circle btn-error btn-outline"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </label>
-                </td>
-              </tr>
+                    <td>
+                      <label
+                        htmlFor="confirmation-modal"
+                        // onClick={() => setDeletingUser(user)}
+                        className="btn btn-md btn-circle btn-error btn-outline"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </label>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

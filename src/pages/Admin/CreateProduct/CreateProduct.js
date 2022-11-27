@@ -74,6 +74,9 @@ const CreateProduct = () => {
                 toast.success("Product Added successfully");
                 navigate("/dashboard/all-products");
               }
+              if (data.message === "forbidden access") {
+                toast.error("product add only can a seller");
+              }
             });
         }
       });

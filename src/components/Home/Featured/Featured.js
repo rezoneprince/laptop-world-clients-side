@@ -5,7 +5,7 @@ import FeaturedItems from "./FeaturedItems";
 
 const Featured = () => {
   const { data: featuredItems, isLoading } = useQuery({
-    queryKey: ["reported"],
+    queryKey: ["featured"],
     queryFn: async () => {
       const res = await fetch(`http://localhost:5000/featured`);
       const data = await res.json();
@@ -15,6 +15,9 @@ const Featured = () => {
 
   if (isLoading) {
     return <Loading />;
+  }
+  if (!featuredItems) {
+    return;
   }
   return (
     <div>
