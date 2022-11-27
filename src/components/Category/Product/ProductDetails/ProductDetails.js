@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdVerified } from "react-icons/md";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../../Contexts/AuthProvider/AuthProvider";
 import BuyProduct from "../BuyProduct/BuyProduct";
 
@@ -10,6 +10,7 @@ const ProductDetails = () => {
   const { title, user } = useContext(AuthContext);
   const [buyProduct, setBuyProduct] = useState(null);
   const product = useLoaderData();
+  const navigate = useNavigate();
 
   const {
     _id,
@@ -89,6 +90,7 @@ const ProductDetails = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.matchedCount > 0) {
+            navigate("/");
             toast.success("Order Successful");
           }
         });

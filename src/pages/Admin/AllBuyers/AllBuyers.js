@@ -1,11 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import Loading from "../../../components/Loading/Loading";
+import ConfirmationModal from "../../../ConfirmationModal/ConfirmationModal";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const AllBuyers = () => {
   const { title } = useContext(AuthContext);
-  const { data: buyers, isLoading } = useQuery({
+  const [deletingBuyer, setDeletingBuyer] = useState(null);
+  const {
+    data: buyers,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["buyers"],
     queryFn: async () => {
       const res = await fetch(`http://localhost:5000/users/buyers`, {
@@ -18,6 +25,26 @@ const AllBuyers = () => {
     },
   });
   title("All Buyers");
+
+  const deleteBuyerHandle = (buyer) => {
+    fetch(`http://localhost:5000/buyer/${buyer._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.deletedCount > 0) {
+          refetch();
+          toast.success("User Delete successfully");
+        }
+      });
+  };
+  const closeModal = () => {
+    setDeletingBuyer(null);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -52,7 +79,7 @@ const AllBuyers = () => {
                     <td>
                       <label
                         htmlFor="confirmation-modal"
-                        // onClick={() => setDeletingUser(user)}
+                        onClick={() => setDeletingBuyer(buyer)}
                         className="btn btn-md btn-circle btn-error btn-outline"
                       >
                         <svg
@@ -77,16 +104,16 @@ const AllBuyers = () => {
           </table>
         </div>
       </div>
-      {/* {deletingUser && (
+      {deletingBuyer && (
         <ConfirmationModal
-          title={`Ate you sure to delete ${deletingUser.name}`}
-          message={`If you delete ${deletingUser.name}. You cannot recover it`}
-          modalData={deletingUser}
+          title={`Ate you sure to delete ${deletingBuyer.name}`}
+          message={`If you delete ${deletingBuyer.name}. You cannot recover it`}
+          modalData={deletingBuyer}
           closeModal={closeModal}
-          successAction={userDeleteHandle}
+          successAction={deleteBuyerHandle}
           successColor="btn-error"
         />
-      )} */}
+      )}
     </div>
   );
 };

@@ -13,8 +13,6 @@ const Dashboard = () => {
 
   title("Dashboard");
 
-  console.log(isSeller);
-
   if (isAdmin) {
     return <AllSellers />;
   }

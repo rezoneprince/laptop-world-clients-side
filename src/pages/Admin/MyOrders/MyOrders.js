@@ -30,7 +30,7 @@ const MyOrders = () => {
   return (
     <div className="p-14">
       <div className="">
-        <h3 className="text-2xl">Total Order: {orders.length}</h3>
+        <h3 className="text-2xl">My Order</h3>
       </div>
       <div className="mt-6">
         <div className="overflow-x-auto">
@@ -40,6 +40,7 @@ const MyOrders = () => {
               <tr>
                 <th>#</th>
                 <th>Product Name</th>
+                <th>Price</th>
                 <th>Customer Name</th>
                 <th>Location</th>
                 <th>Phone Number</th>
@@ -55,6 +56,7 @@ const MyOrders = () => {
                   <tr key={order._id}>
                     <th>{i + 1}</th>
                     <td>{order.name}</td>
+                    <td>{order.resalePrice}</td>
                     <td>{order.customerName}</td>
                     <td>{order.location}</td>
                     <td>{order.customerPhone}</td>
