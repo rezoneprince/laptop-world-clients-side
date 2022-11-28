@@ -7,6 +7,7 @@
 ### Admin Access
 
 adminEmail: admin@laptop.com
+
 adminPassword: Admin@123
 
 ---
