@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import ProductDetails from "../../components/Category/Product/ProductDetails/ProductDetails";
+import Error from "../../components/Error/Error";
 import Admin from "../../layouts/Admin";
 import Main from "../../layouts/Main";
 import AllBuyers from "../../pages/Admin/AllBuyers/AllBuyers";
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
+    errorElement: <Error />,
     children: [
       {
         path: "/",
@@ -52,7 +54,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/product/:id",
-        element: <ProductDetails />,
+        element: (
+          <PrivateRoute>
+            <ProductDetails />
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/product/${params.id}`),
       },
@@ -65,6 +71,7 @@ const router = createBrowserRouter([
         <Admin />
       </PrivateRoute>
     ),
+    errorElement: <Error />,
     children: [
       {
         path: "/dashboard",

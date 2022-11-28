@@ -16,24 +16,28 @@ const Featured = () => {
   if (isLoading) {
     return <Loading />;
   }
-  if (!featuredItems) {
-    return;
-  }
+
+  console.log(featuredItems);
+
   return (
-    <div>
-      <div className="mt-10">
-        <h3 className="text-center text-4xl font-bold">Featured Items</h3>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10 mx-5">
-        {featuredItems ? (
-          featuredItems.map((featured) => (
-            <FeaturedItems key={featured._id} featured={featured} />
-          ))
-        ) : (
-          <div>No Featured Product Available</div>
-        )}
-      </div>
-    </div>
+    <>
+      {featuredItems.length > 0 && (
+        <div>
+          <div className="mt-10">
+            <h3 className="text-center text-4xl font-bold">Featured Items</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10 mx-5">
+            {featuredItems ? (
+              featuredItems.map((featured) => (
+                <FeaturedItems key={featured._id} featured={featured} />
+              ))
+            ) : (
+              <div>No Featured Product Available</div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
