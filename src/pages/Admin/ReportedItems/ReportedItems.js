@@ -6,7 +6,7 @@ import ConfirmationModal from "../../../ConfirmationModal/ConfirmationModal";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const ReportedItems = () => {
-  const { title } = useContext(AuthContext);
+  const { title, logOut } = useContext(AuthContext);
   const [deletingReported, setDeletingReported] = useState(null);
   const {
     data: reportedItems,
@@ -21,6 +21,15 @@ const ReportedItems = () => {
         },
       });
       const data = await res.json();
+      if (data.message === "forbidden access") {
+        return logOut()
+          .then(() => {
+            toast.success("Successfully Sign Out");
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
+      }
       return data;
     },
   });

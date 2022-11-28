@@ -6,7 +6,7 @@ import ConfirmationModal from "../../../ConfirmationModal/ConfirmationModal";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const AllProducts = () => {
-  const { title, user } = useContext(AuthContext);
+  const { title, user, logOut } = useContext(AuthContext);
   const [deletingProducts, setDeletingProducts] = useState(null);
   const {
     data: products,
@@ -24,9 +24,30 @@ const AllProducts = () => {
         }
       );
       const data = await res.json();
+      if (data.message === "forbidden access") {
+        return logOut()
+          .then(() => {
+            toast.success("Successfully Sign Out");
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
+      }
       return data;
     },
   });
+
+  // console.log(products);
+
+  // if (products.message === "forbidden access") {
+  //   logOut()
+  //     .then(() => {
+  //       toast.success("Successfully Sign Out");
+  //     })
+  //     .catch((error) => {
+  //       toast.error(error.message);
+  //     });
+  // }
 
   const handleFeatured = (id) => {
     fetch(`http://localhost:5000/featured/${id}`, {

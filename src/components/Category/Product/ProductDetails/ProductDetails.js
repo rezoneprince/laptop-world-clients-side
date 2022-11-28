@@ -25,7 +25,7 @@ const ProductDetails = () => {
     discretion,
     image,
     date,
-    verified,
+    verifiedSeller,
     sold,
   } = product;
 
@@ -117,7 +117,7 @@ const ProductDetails = () => {
           <div className="">
             <p className="flex items-center gap-2">
               SellerName: {sellerName}
-              {verified && <MdVerified className="text-green-600" />}
+              {verifiedSeller && <MdVerified className="text-green-600" />}
             </p>
             <p> Resale Price: ${resalePrice}</p>
             <p>Brand: {category}</p>

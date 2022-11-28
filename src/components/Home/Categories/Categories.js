@@ -1,14 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import toast from "react-hot-toast";
 import Loading from "../../Loading/Loading";
 import Category from "./Category";
 
 const Categories = () => {
-  const { data: categories, isLoading } = useQuery({
+  const {
+    data: categories,
+    isLoading,
+    logOut,
+  } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
       const res = await fetch("http://localhost:5000/categories");
       const data = await res.json();
+      if (data.message === "forbidden access") {
+        return logOut()
+          .then(() => {
+            toast.success("Successfully Sign Out");
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
+      }
       return data;
     },
   });

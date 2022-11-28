@@ -56,7 +56,7 @@ const CreateProduct = () => {
             image: imgData.data.url,
             featured: data.featured,
             date,
-            verified: user.verified,
+            verifiedSeller: user.verified,
           };
 
           fetch("http://localhost:5000/products", {

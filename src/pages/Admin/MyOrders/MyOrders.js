@@ -6,7 +6,7 @@ import ConfirmationModal from "../../../ConfirmationModal/ConfirmationModal";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const MyOrders = () => {
-  const { title, user } = useContext(AuthContext);
+  const { title, user, logOut } = useContext(AuthContext);
   const [deletingOrder, setDeletingOrder] = useState(null);
   const {
     data: orders,
@@ -24,6 +24,15 @@ const MyOrders = () => {
         }
       );
       const data = await res.json();
+      if (data.message === "forbidden access") {
+        return logOut()
+          .then(() => {
+            toast.success("Successfully Sign Out");
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
+      }
       return data;
     },
   });
