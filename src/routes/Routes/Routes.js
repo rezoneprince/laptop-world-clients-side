@@ -50,7 +50,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/categories/${params.id}`),
+          fetch(`https://laptop-world-server.vercel.app/categories/${params.id}`),
       },
       {
         path: "/product/:id",
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/product/${params.id}`),
+          fetch(`https://laptop-world-server.vercel.app/product/${params.id}`),
       },
     ],
   },
@@ -92,7 +92,7 @@ const router = createBrowserRouter([
             <CreateProduct />
           </SellerRoute>
         ),
-        loader: () => fetch("http://localhost:5000/categories"),
+        loader: () => fetch("https://laptop-world-server.vercel.app/categories"),
       },
       {
         path: "/dashboard/my-orders",

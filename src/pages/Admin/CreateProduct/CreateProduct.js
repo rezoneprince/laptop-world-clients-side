@@ -59,7 +59,7 @@ const CreateProduct = () => {
             verifiedSeller: user.verified,
           };
 
-          fetch("http://localhost:5000/products", {
+          fetch("https://laptop-world-server.vercel.app/products", {
             method: "POST",
             headers: {
               "content-type": "application/json",

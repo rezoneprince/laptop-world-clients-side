@@ -16,7 +16,7 @@ const AllProducts = () => {
     queryKey: ["products", user],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/products?email=${user?.email}`,
+        `https://laptop-world-server.vercel.app/products?email=${user?.email}`,
         {
           headers: {
             authorization: `bearer ${localStorage.getItem("accessToken")}`,
@@ -50,7 +50,7 @@ const AllProducts = () => {
   // }
 
   const handleFeatured = (id) => {
-    fetch(`http://localhost:5000/featured/${id}`, {
+    fetch(`https://laptop-world-server.vercel.app/featured/${id}`, {
       method: "PUT",
       headers: {
         authorization: `bearer ${localStorage.getItem("accessToken")}`,
@@ -68,7 +68,7 @@ const AllProducts = () => {
   title("All Products");
 
   const deleteProductsHandle = (product) => {
-    fetch(`http://localhost:5000/products/${product._id}`, {
+    fetch(`https://laptop-world-server.vercel.app/products/${product._id}`, {
       method: "DELETE",
       headers: {
         authorization: `bearer ${localStorage.getItem("accessToken")}`,

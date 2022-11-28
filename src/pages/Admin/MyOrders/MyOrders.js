@@ -16,7 +16,7 @@ const MyOrders = () => {
     queryKey: ["orders", user],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/orders?email=${user?.email}`,
+        `https://laptop-world-server.vercel.app/orders?email=${user?.email}`,
         {
           headers: {
             authorization: `bearer ${localStorage.getItem("accessToken")}`,
@@ -40,7 +40,7 @@ const MyOrders = () => {
   title("My Orders");
 
   const deleteOrderHandle = (orders) => {
-    fetch(`http://localhost:5000/orders/${orders._id}`, {
+    fetch(`https://laptop-world-server.vercel.app/orders/${orders._id}`, {
       method: "DELETE",
       headers: {
         authorization: `bearer ${localStorage.getItem("accessToken")}`,

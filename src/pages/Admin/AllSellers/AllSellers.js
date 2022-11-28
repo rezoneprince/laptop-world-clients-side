@@ -15,11 +15,14 @@ const AllSellers = () => {
   } = useQuery({
     queryKey: ["sellers"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/users/sellers`, {
-        headers: {
-          authorization: `bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      const res = await fetch(
+        `https://laptop-world-server.vercel.app/users/sellers`,
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
       const data = await res.json();
       if (data.message === "forbidden access") {
         return logOut()
@@ -36,7 +39,7 @@ const AllSellers = () => {
   title("All Sellers");
 
   const makeVerifiedHandle = (id) => {
-    fetch(`http://localhost:5000/users/verified/${id}`, {
+    fetch(`https://laptop-world-server.vercel.app/users/verified/${id}`, {
       method: "PUT",
       headers: {
         authorization: `bearer ${localStorage.getItem("accessToken")}`,
@@ -52,7 +55,7 @@ const AllSellers = () => {
   };
 
   const deleteSellerHandle = (seller) => {
-    fetch(`http://localhost:5000/seller/${seller._id}`, {
+    fetch(`https://laptop-world-server.vercel.app/seller/${seller._id}`, {
       method: "DELETE",
       headers: {
         authorization: `bearer ${localStorage.getItem("accessToken")}`,

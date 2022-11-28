@@ -67,7 +67,7 @@ const SignUp = () => {
     const user = { name, email };
     seller ? (user.role = "seller") : (user.role = "buyer");
 
-    fetch("http://localhost:5000/users", {
+    fetch("https://laptop-world-server.vercel.app/users", {
       method: "POST",
       headers: {
         "content-type": "application/json",

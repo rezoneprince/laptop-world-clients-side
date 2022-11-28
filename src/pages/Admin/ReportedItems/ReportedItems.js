@@ -15,7 +15,7 @@ const ReportedItems = () => {
   } = useQuery({
     queryKey: ["reported"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/reported`, {
+      const res = await fetch(`https://laptop-world-server.vercel.app/reported`, {
         headers: {
           authorization: `bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -37,7 +37,7 @@ const ReportedItems = () => {
   title("Reported Items");
 
   const deleteReportedHandle = (reported) => {
-    fetch(`http://localhost:5000/reported/${reported._id}`, {
+    fetch(`https://laptop-world-server.vercel.app/reported/${reported._id}`, {
       method: "DELETE",
       headers: {
         authorization: `bearer ${localStorage.getItem("accessToken")}`,

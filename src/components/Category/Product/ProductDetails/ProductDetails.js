@@ -30,7 +30,7 @@ const ProductDetails = () => {
   } = product;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/product/${_id}`)
+    fetch(`https://laptop-world-server.vercel.app/product/${_id}`)
       .then((res) => res.json())
       .then((data) => setBuyProduct(data));
   }, [_id]);
@@ -38,7 +38,7 @@ const ProductDetails = () => {
   title(name);
 
   const handleReport = (id) => {
-    fetch(`http://localhost:5000/report/${id}`, {
+    fetch(`https://laptop-world-server.vercel.app/report/${id}`, {
       method: "PUT",
       headers: {
         authorization: `bearer ${localStorage.getItem("accessToken")}`,
@@ -68,7 +68,7 @@ const ProductDetails = () => {
     };
 
     axios
-      .post("http://localhost:5000/orders", orderedProduct)
+      .post("https://laptop-world-server.vercel.app/orders", orderedProduct)
       .then(function (response) {
         if (response.statusText === "OK") {
           setBuyProduct(null);
@@ -81,7 +81,7 @@ const ProductDetails = () => {
       });
 
     const updateProduct = (id) => {
-      fetch(`http://localhost:5000/products/${id}`, {
+      fetch(`https://laptop-world-server.vercel.app/products/${id}`, {
         method: "PUT",
         headers: {
           authorization: `bearer ${localStorage.getItem("accessToken")}`,

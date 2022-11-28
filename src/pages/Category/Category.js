@@ -14,7 +14,7 @@ const Category = () => {
     queryKey: ["products", name],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/category-products?category=${name}`,
+        `https://laptop-world-server.vercel.app/category-products?category=${name}`,
         {
           headers: {
             authorization: `bearer ${localStorage.getItem("accessToken")}`,

@@ -15,7 +15,7 @@ const AllBuyers = () => {
   } = useQuery({
     queryKey: ["buyers"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/users/buyers`, {
+      const res = await fetch(`https://laptop-world-server.vercel.app/users/buyers`, {
         headers: {
           authorization: `bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -36,7 +36,7 @@ const AllBuyers = () => {
   title("All Buyers");
 
   const deleteBuyerHandle = (buyer) => {
-    fetch(`http://localhost:5000/buyer/${buyer._id}`, {
+    fetch(`https://laptop-world-server.vercel.app/buyer/${buyer._id}`, {
       method: "DELETE",
       headers: {
         authorization: `bearer ${localStorage.getItem("accessToken")}`,
