@@ -1,13 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import Loading from "../../../components/Loading/Loading";
+import ConfirmationModal from "../../../ConfirmationModal/ConfirmationModal";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const AllProducts = () => {
   const { title, user } = useContext(AuthContext);
+  const [deletingProducts, setDeletingProducts] = useState(null);
   const {
-    data: products, 
+    data: products,
     isLoading,
     refetch,
   } = useQuery({
@@ -43,6 +45,26 @@ const AllProducts = () => {
   };
 
   title("All Products");
+
+  const deleteProductsHandle = (product) => {
+    fetch(`http://localhost:5000/products/${product._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.deletedCount > 0) {
+          refetch();
+          toast.success("User Delete successfully");
+        }
+      });
+  };
+  const closeModal = () => {
+    setDeletingProducts(null);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -103,7 +125,7 @@ const AllProducts = () => {
                     <td>
                       <label
                         htmlFor="confirmation-modal"
-                        // onClick={() => setDeletingUser(user)}
+                        onClick={() => setDeletingProducts(product)}
                         className="btn btn-md btn-circle btn-error btn-outline"
                       >
                         <svg
@@ -131,16 +153,16 @@ const AllProducts = () => {
           )}
         </div>
       </div>
-      {/* {deletingUser && (
+      {deletingProducts && (
         <ConfirmationModal
-          title={`Ate you sure to delete ${deletingUser.name}`}
-          message={`If you delete ${deletingUser.name}. You cannot recover it`}
-          modalData={deletingUser}
+          title={`Ate you sure to delete ${deletingProducts.name}`}
+          message={`If you delete ${deletingProducts.name}. You cannot recover it`}
+          modalData={deletingProducts}
           closeModal={closeModal}
-          successAction={userDeleteHandle}
+          successAction={deleteProductsHandle}
           successColor="btn-error"
         />
-      )} */}
+      )}
     </div>
   );
 };
