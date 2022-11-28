@@ -7,11 +7,11 @@ const Banner = () => {
         <div className="max-w-lg py-10">
           <h1 className="text-5xl font-bold">Sell Your Old Laptop</h1>
           <p className="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+            Most trusted platform to sell old Laptop, sell your used Laptop at
+            Cashify and get instant cash at your doorstep. Visit the website to
+            know more!
           </p>
-          <button className="btn btn-primary">Get Started</button>
+          <button className="btn btn-primary btn-outline">Get Started</button>
         </div>
       </div>
     </div>
