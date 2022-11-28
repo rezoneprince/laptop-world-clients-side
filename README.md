@@ -6,22 +6,8 @@
 
 ### Admin Access
 
-admin@laptop.com
-Admin@123
-
----
-
-### Seller Access
-
-seller@laptop.com
-Seller@123
-
----
-
-### Buyer Access
-
-buyer@laptop.com
-Buyer@123
+adminEmail: admin@laptop.com
+adminPassword: Admin@123
 
 ---
 
