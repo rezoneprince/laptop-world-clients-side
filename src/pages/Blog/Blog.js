@@ -50,7 +50,7 @@ const Blog = () => {
             object,
           </p>
           <p className="pt-3">
-            we use Object.getPrototypeOf and Object.setPrototypeOf.
+            We use Object.getPrototypeOf and Object.setPrototypeOf.
           </p>
         </div>
       </div>
