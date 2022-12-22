@@ -15,7 +15,7 @@ const Blog = () => {
         <div className="collapse-content pl-10">
           <p>
             The Four Kinds of React State to Manage When we talk about state in
-            our applications, it’s important to be clear about what types of
+            our applications,it’s important to be clear about what types of
             state actually matter.
           </p>
           <p className="pt-3">
